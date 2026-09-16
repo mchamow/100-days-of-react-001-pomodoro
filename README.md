@@ -18,11 +18,12 @@
 
 ## Tech
 
-React 19 · TypeScript · Vite · deployed to GitHub Pages with GitHub Actions.
+React 19 · TypeScript · Vite · Vitest + Testing Library · deployed to GitHub Pages with GitHub Actions.
 
 ## Run locally
 
 ```bash
 pnpm install
 pnpm dev
+pnpm test   # unit tests (Vitest)
 ```
