@@ -14,21 +14,22 @@ interface Props {
 export function ProgressRing({ progress, children }: Props) {
   const center = SIZE / 2
   return (
-    <div className="ring">
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true">
-        <circle className="ring-track" cx={center} cy={center} r={RADIUS} strokeWidth={STROKE} />
+    <div className="relative aspect-square w-[min(280px,80vw)]">
+      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="block size-full" aria-hidden="true">
+        <circle className="fill-none stroke-foreground/8" cx={center} cy={center} r={RADIUS} strokeWidth={STROKE} />
         <circle
-          className="ring-bar"
+          className="fill-none stroke-mode transition-[stroke-dashoffset,stroke] duration-300 ease-linear"
           cx={center}
           cy={center}
           r={RADIUS}
           strokeWidth={STROKE}
+          strokeLinecap="round"
           strokeDasharray={CIRCUMFERENCE}
           strokeDashoffset={CIRCUMFERENCE * (1 - progress)}
           transform={`rotate(-90 ${center} ${center})`}
         />
       </svg>
-      <div className="ring-content">{children}</div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">{children}</div>
     </div>
   )
 }

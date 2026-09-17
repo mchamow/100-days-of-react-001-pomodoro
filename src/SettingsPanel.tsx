@@ -1,3 +1,9 @@
+import { ChevronDown } from 'lucide-react'
+import { useId } from 'react'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 import { MODE_LABELS, MODES, type Settings } from './pomodoro'
 
 interface Props {
@@ -7,38 +13,41 @@ interface Props {
 
 export function SettingsPanel({ settings, onChange }: Props) {
   return (
-    <details className="settings">
-      <summary>Settings</summary>
-      <div className="settings-grid">
-        {MODES.map((mode) => (
+    <Collapsible className="w-full rounded-xl border bg-card text-card-foreground">
+      <CollapsibleTrigger className="group flex w-full items-center justify-between rounded-xl px-4 py-3 font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+        Settings
+        <ChevronDown className="size-4 text-muted-foreground transition-transform group-data-panel-open:rotate-180" />
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="grid grid-cols-2 gap-x-3 gap-y-4 px-4 pb-4">
+          {MODES.map((mode) => (
+            <NumberField
+              key={mode}
+              label={`${MODE_LABELS[mode]} (min)`}
+              value={settings.minutes[mode]}
+              max={120}
+              onChange={(value) => onChange({ minutes: { ...settings.minutes, [mode]: value } })}
+            />
+          ))}
           <NumberField
-            key={mode}
-            label={`${MODE_LABELS[mode]} (min)`}
-            value={settings.minutes[mode]}
-            max={120}
-            onChange={(value) => onChange({ minutes: { ...settings.minutes, [mode]: value } })}
+            label="Long break every"
+            value={settings.longBreakEvery}
+            max={12}
+            onChange={(value) => onChange({ longBreakEvery: value })}
           />
-        ))}
-        <NumberField
-          label="Long break every"
-          value={settings.longBreakEvery}
-          max={12}
-          onChange={(value) => onChange({ longBreakEvery: value })}
-        />
-        <label className="toggle">
-          <input
-            type="checkbox"
+          <SwitchField
+            label="Start the next session automatically"
             checked={settings.autoStart}
-            onChange={(e) => onChange({ autoStart: e.target.checked })}
+            onChange={(autoStart) => onChange({ autoStart })}
           />
-          Start the next session automatically
-        </label>
-        <label className="toggle">
-          <input type="checkbox" checked={settings.sound} onChange={(e) => onChange({ sound: e.target.checked })} />
-          Play a chime when a session ends
-        </label>
-      </div>
-    </details>
+          <SwitchField
+            label="Play a chime when a session ends"
+            checked={settings.sound}
+            onChange={(sound) => onChange({ sound })}
+          />
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   )
 }
 
@@ -50,20 +59,42 @@ interface NumberFieldProps {
 }
 
 function NumberField({ label, value, max, onChange }: NumberFieldProps) {
+  const id = useId()
   return (
-    <label className="field">
-      <span>{label}</span>
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor={id} className="font-normal text-muted-foreground">
+        {label}
+      </Label>
       {/* Uncontrolled so the field can be cleared while typing; only valid values are applied. */}
-      <input
+      <Input
+        id={id}
         type="number"
         min={1}
         max={max}
         defaultValue={value}
         onChange={(e) => {
-          const next = e.target.valueAsNumber
+          const next = e.currentTarget.valueAsNumber
           if (Number.isInteger(next) && next >= 1 && next <= max) onChange(next)
         }}
       />
-    </label>
+    </div>
+  )
+}
+
+interface SwitchFieldProps {
+  label: string
+  checked: boolean
+  onChange: (checked: boolean) => void
+}
+
+function SwitchField({ label, checked, onChange }: SwitchFieldProps) {
+  const id = useId()
+  return (
+    <div className="col-span-full flex items-center gap-2.5">
+      <Switch id={id} checked={checked} onCheckedChange={onChange} />
+      <Label htmlFor={id} className="font-normal">
+        {label}
+      </Label>
+    </div>
   )
 }
