@@ -1,10 +1,10 @@
 # 🍅 Pomodoro Timer
 
-[![Test and deploy](https://github.com/mchamow/100-days-of-react-001-pomodoro/actions/workflows/deploy.yml/badge.svg)](https://github.com/mchamow/100-days-of-react-001-pomodoro/actions/workflows/deploy.yml)
+[![Test and deploy](https://github.com/mchamow/pomodoro/actions/workflows/deploy.yml/badge.svg)](https://github.com/mchamow/pomodoro/actions/workflows/deploy.yml)
 
-**Day 1 of [100 Days of React](https://github.com/mchamow?tab=repositories&q=100-days-of-react)**: a simple focus timer that uses the Pomodoro technique.
+**Day 1 of [100 Days of React](https://github.com/mchamow?tab=repositories)**: a simple focus timer that uses the Pomodoro technique.
 
-**Live demo:** https://mchamow.github.io/100-days-of-react-001-pomodoro/
+**Live demo:** https://mchamow.github.io/pomodoro/
 
 ## Features
 
